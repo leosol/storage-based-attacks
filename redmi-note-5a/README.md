@@ -1,7 +1,7 @@
 # Redmi Note 5A (Bypass user lock)
 ## Storage based Attack - using EDL Programmers
 
-This is just a guide to anybody who has the wright (by being the owner of the data for example) to access files stored in a Redmi Note 5A (MDG6). To accomplish this task, we will be using the vulnerability described here [Storage based Attack - using EDL Programmers](https://alephsecurity.com/2018/01/22/qualcomm-edl-2/). The first tool we need was made by [Reverse Engineer Bjoern Kerler](https://github.com/bkerler/edl). The seccond tool is the specially crafted boot image made by AlepthSecurity Team, which can be found [here](https://github.com/alephsecurity/firehorse). **Basically, bootloader will be unlocked, then it will be possible to boot the specially crafted boot image with fastboot (without flashing). At the end, you might want to relock your bootloader**
+This is just a guide to anybody who has the right (by being the owner of the data for example) to access files stored in a Redmi Note 5A (MDG6). To accomplish this task, we will be using the vulnerability described here [Storage based Attack - using EDL Programmers](https://alephsecurity.com/2018/01/22/qualcomm-edl-2/). The first tool we need was made by [Reverse Engineer Bjoern Kerler](https://github.com/bkerler/edl). The seccond tool is the specially crafted boot image made by AlepthSecurity Team, which can be found [here](https://github.com/alephsecurity/firehorse). **Basically, bootloader will be unlocked, then it will be possible to boot the specially crafted boot image with fastboot (without flashing). At the end, you might want to relock your bootloader**
 
 
 ## Risks
@@ -35,14 +35,19 @@ sudo python3 -m pip install -r requirements.txt
 ```bash
 ./edl.py r devinfo devinfo.img
 ```
-3. Make a copy and patch the file with an Hex Editor
+2. Make a copy and patch the file with an Hex Editor
 ```bash
 cp devinfo.img devinfo-unlocked.img
 wxHexEditor devinfo-unlocked.img 
 ```
-5. Change bytes 0x10 and 0x18 from 0x00 to 0x01 (see picuture)
+3. Change bytes 0x10 and 0x18 from 0x00 to 0x01 (see picuture)
 
 ![EDL](./images/redmi-note-5a-EDL-unlocked-devinfo.png)
+
+4. Write devinfo
+```bash
+./edl.py w devinfo devinfo-unlocked.img
+```
 
 ## Security bypass
 1. You should be able to see a small message while leaving EDL mode meaning that your device just had been unlocked.
