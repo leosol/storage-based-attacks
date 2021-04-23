@@ -27,4 +27,29 @@ sudo python3 -m pip install -r requirements.txt
 4. Connect USB Cable to the device (do not connect to the Linux Based Station yet)
 5. Enter edl project you've just cloned from [bkerler](https://github.com/bkerler/edl.git) (cd edl). Type ./edl.py (make sure you have python working correctly). You should see some dots being printed in your terminal, do not connect the phone yet.
 7. Test Points showned in the following image must be shortened with a tweezers for a second or two, at the same time you plug USB cable to the PC. 
-![GitHub Logo](https://alephsecurity.com/assets/img/test_points_xiaomi_note5a.jpg)
+
+![EDL](./images/redmi-note-5a-EDL-commented.png)
+
+## Unlocking your device
+1. Dump devinfo partition
+```bash
+./edl.py r devinfo devinfo.img
+```
+3. Make a copy and patch the file with an Hex Editor
+```bash
+cp devinfo.img devinfo-unlocked.img
+wxHexEditor devinfo-unlocked.img 
+```
+5. Change bytes 0x10 and 0x18 from 0x00 to 0x01 (see picuture)
+
+![EDL](./images/redmi-note-5a-EDL-unlocked-devinfo.png)
+
+## Security bypass
+1. You should be able to see a small message while leaving EDL mode meaning that your device just had been unlocked.
+2. Turn it off and enter FASTBOOT MODE by pressing power + volume down.
+3. While in fastboot mode do the following
+```bash
+fastboot boot boot-ugglite-root.img
+#wait for the device to turn on
+adb devices... #should be able to have root access
+```
